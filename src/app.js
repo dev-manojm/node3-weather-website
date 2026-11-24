@@ -1,6 +1,6 @@
 const path = require('path')
 const express = require('express')
-const hbs = require('hbs')
+const { engine } = require('express-handlebars')
 const geocode=require('./utils/geocode')
 const forecast=require('./utils/forecast')
 
@@ -13,9 +13,13 @@ const viewsPath = path.join(__dirname, '../templates/views')
 const partialsPath = path.join(__dirname, '../templates/partials')
 
 // Setup handlebars engine and views location
+app.engine('hbs', engine({
+    extname: '.hbs',
+    defaultLayout: false,
+    partialsDir: partialsPath
+}))
 app.set('view engine', 'hbs')
 app.set('views', viewsPath)
-hbs.registerPartials(partialsPath)
 
 // Setup static directory to serve
 app.use(express.static(publicDirectoryPath))
